@@ -41,7 +41,9 @@ const eagerGraph = {
 			const nodeDependencies = getArgs(this.graph[node]);
 
 			if (nodeDependencies.some(d => path.has(d))) {
-				console.log("Error: cyclic dependency detected");
+				const cycleNode = nodeDependencies.find(d => path.has(d));
+				const cycleString = Array.from(path).reduce((store, item) => store + (item === cycleNode ? '( ' + item + ' )' : item) + ' -> ', '');
+				console.log("Error: cyclic dependency detected: " + cycleString + node + ' -> ' + '( ' + cycleNode + ' )');
 				return;
 			}
 			
